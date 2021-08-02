@@ -56,16 +56,15 @@ ColorSplashPhotoProcessor$ python -m pytest tests/unit -v
 ColorSplashPhotoProcessor$ AWS_SAM_STACK_NAME=<stack-name> python -m pytest tests/integration -v
 ```
 
-## Cleanup
+## Instructions
 
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
+1. Via the command line, use conda to activate the correct environment. 
 
-```bash
-aws cloudformation delete-stack --stack-name ColorSplashPhotoProcessor
-```
+>`$ conda activate colorSplash`
 
-## Resources
+If Visual Studio code does not immediately select the interpreter for running, use the command palette (cmd + shift + p) and select `Python Select Interpreter` and choose `colorSplash: conda`.
 
-See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
+I'm going to do the intial color determinartion via this tutorial: https://towardsdatascience.com/color-identification-in-images-machine-learning-application-b26e770c4c71
 
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+
+
