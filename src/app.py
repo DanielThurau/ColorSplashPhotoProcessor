@@ -1,6 +1,7 @@
 import json
-
 import requests
+import os
+from dotenv import load_dotenv
 
 
 def lambda_handler(event, context):
@@ -19,6 +20,12 @@ def lambda_handler(event, context):
         Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
     """
 
+    # logging.getLogger().setLevel(logging.INFO)
+    load_dotenv(".env")
+
+    stage = os.getenv('STAGE')
+    print(stage)
+
     try:
         ip = requests.get("http://checkip.amazonaws.com/")
     except requests.RequestException as e:
@@ -27,9 +34,14 @@ def lambda_handler(event, context):
 
         raise e
 
-    return {
+
+    output = {
         "statusCode": 200,
         "body": json.dumps({
-            "message": "hello world",
+            "message": "Dan rocks his socks",
         }),
     }
+
+    print(output)
+
+    return output
