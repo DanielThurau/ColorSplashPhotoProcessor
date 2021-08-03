@@ -1,10 +1,16 @@
 import json
+import re
 import requests
 import os
+import cv2
 from dotenv import load_dotenv
+from s3_helper import S3Helper
+import numpy as np
 
 
 def lambda_handler(event, context):
+
+    # import cv2
     """Sample pure Lambda function
 
     Parameters
@@ -24,15 +30,12 @@ def lambda_handler(event, context):
     load_dotenv(".env")
 
     stage = os.getenv('STAGE')
-    print(stage)
 
-    try:
-        ip = requests.get("http://checkip.amazonaws.com/")
-    except requests.RequestException as e:
-        # Send some context about this error to Lambda Logs
-        print(e)
+    s3 = S3Helper("colorsplash")
+    result = s3.list_items()
 
-        raise e
+    bs = s3.get_item(result[0])
+    cv2.imdecode(np.asarray(bytearray(bs)), cv2.IMREAD_COLOR)
 
 
     output = {
@@ -41,7 +44,5 @@ def lambda_handler(event, context):
             "message": "Dan rocks his socks",
         }),
     }
-
-    print(output)
 
     return output

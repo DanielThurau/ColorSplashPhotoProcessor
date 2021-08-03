@@ -67,4 +67,5 @@ If Visual Studio code does not immediately select the interpreter for running, u
 I'm going to do the intial color determinartion via this tutorial: https://towardsdatascience.com/color-identification-in-images-machine-learning-application-b26e770c4c71
 
 
-
+2. To make the opencv python module available to the lambda function, I followed this StackOverflow post to create a Lambda layer with required libraries. The layer can be found at `arn:aws:lambda:us-west-1:015914662809:layer:cv2-python38:4
+`
