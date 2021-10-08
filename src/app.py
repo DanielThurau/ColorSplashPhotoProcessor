@@ -33,22 +33,6 @@ def get_colors(image, number_of_colors):
 
 def lambda_handler(event, context):
 
-    # import cv2
-    """Sample pure Lambda function
-
-    Parameters
-    ----------
-    event: dict, required
-        API Gateway Lambda Proxy Input Format
-
-        Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
-
-    context: object, required
-        Lambda Context runtime methods and attributes
-
-        Context doc: https://docs.aws.amazon.com/lambda/latest/dg/python-context-object.html
-    """
-
     # logging.getLogger().setLevel(logging.INFO)
     load_dotenv(".env")
 
@@ -59,13 +43,13 @@ def lambda_handler(event, context):
 
     s3 = S3Helper("colorsplash")
     ddb = ColorSplashRGBTableHelper("ColorSplashRGB")
-    results = s3.list_items()
-    print(results)
+    image_ids = s3.list_items()
+    print(image_ids)
     image_dict = {}
 
-    for result in results:
-        image_byte_stream = s3.get_item(result)
-        print("Processing file: " + result)
+    for image_id in image_ids:
+        image_byte_stream = s3.get_item(image_id)
+        print("Processing file: " + image_id)
 
         image = cv2.imdecode(np.asarray(bytearray(image_byte_stream)), cv2.IMREAD_COLOR)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -81,15 +65,15 @@ def lambda_handler(event, context):
 
             if color_tuple not in image_dict:
                 image_dict[color_tuple] = set()
-            image_dict[color_tuple].add(os.path.splitext(result)[0])# Adds just the id not the file extension
+            image_dict[color_tuple].add(os.path.splitext(image_id)[0])# Adds just the id not the file extension
     
     print(image_dict)
 
     
     ddb.update_rgb_values(image_dict)
 
-    for result in results:
-        s3.delete_item(result)
+    for image_id in image_ids:
+        s3.delete_item(image_id)
 
     output = {
         "statusCode": 200,

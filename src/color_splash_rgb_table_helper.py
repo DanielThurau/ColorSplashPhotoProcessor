@@ -1,6 +1,4 @@
-import re
 import boto3
-import os
 
 class ColorSplashRGBTableHelper:
     def __init__(self, table_name):
@@ -45,6 +43,8 @@ class ColorSplashRGBTableHelper:
                 'ImageIds': self.serialize_ddb_list(value)
             }
         )
+
+        return response
 
     def deserialize_ddb_list(self, serialized_data):
         id_set = set()
